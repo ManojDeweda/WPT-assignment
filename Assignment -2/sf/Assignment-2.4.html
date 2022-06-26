@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment-2.4 </title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
+    <script>
+        $(document).ready(() => {
+            console.log("loaded");
+            $('#pincode').blur(() => {
+                console.log("Blur event occurred");
+                let pin= $('#pincode').val();
+
+                let ajaxparam = {
+                    data: {pin:pin},
+                    url: 'http://localhost:900/areaname',
+                    type: 'get',
+                    datatype: 'json',
+                    success: function (output) {
+                        console.log("Data fetched successfully");
+                        console.log(output);
+                        if(output.status === true){
+                            $('#areaname').text("areaname=>"+output.detail.areaname);
+                            $('#msg').text("Areaname for corresponding pincode found");
+                        }
+                        else{
+                            $('#areaname').text("");
+                            $('#msg').text("No area is assigned for pincode");
+                        }
+                    },
+                    error: function(errorfromserver) {
+                        console.log("some error occurred"+errorfromserver);
+                    }
+                }
+
+                $.ajax(ajaxparam);
+            });
+        });
+    </script>
+</head>
+<body>
+   
+    <input type="number" id="pincode" placeholder="Pincode">
+    <span  id="areaname"></span><br><br>
+    <p id="msg"></p>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASSIGNMENT-2.5</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
+    <script>
+        $(document).ready(() => {
+            console.log("dom loaded");
+            $('#acno').blur(() => {
+                console.log("Blur event ");
+                let acno= $('#acno').val();
+
+                let ajaxparam = {
+                    data: {acno:acno},
+                    url: 'http://localhost:900/balance',
+                    type: 'get',
+                    datatype: 'json',
+                    success: function (output) {
+                        console.log("Data fetched successfully");
+                        
+                        if(output.status === true){
+                            console.log(output.status);
+                            console.log(output.detail.cbalence);
+
+                            $('#balence').text("Account Balence="+output.detail.cbalence);
+                            $('#msg').text("Balence details found");
+                        }
+                        else{
+                            $('#balence').text("");
+                            $('#msg').text("Balence details  not found");
+                        }
+                    },
+                    error: function(errorfromserver) {
+                        console.log("some error occurred"+errorfromserver);
+                    }
+                }
+
+                $.ajax(ajaxparam);
+            });
+        });
+    </script>
+</head>
+<body>
+    <input type="number" id="acno" name="acno" placeholder="Account Number">
+    <span id="balence"></span><br><br>
+    <p id="msg"></p>
+
+</body>
+</html>
