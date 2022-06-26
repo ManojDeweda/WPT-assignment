@@ -1,0 +1,327 @@
+<html>
+  <head>
+    <title> Assignment 1.1</title>
+    <script>
+       
+      class Logic {
+        constructor(){
+             
+              this.nums=new Array();
+              while(this.nums.length !== 10) {
+                 this.nums.push(Math.floor(Math.random() * 100) + 1);
+                }
+                
+             
+        }
+
+
+       
+         getAllnums() {
+          return this.nums;
+         }
+
+        getNumber(key) {
+          let output = false
+          for (let i = 0; i < this.nums.length; i++) {
+            if (this.nums[i] == key) {
+              output = true;
+              break;
+            }
+
+          }
+          return output;
+        }
+        addNumber(input){
+         this.nums.push(input);
+
+
+        }
+         
+        deleteNumber(key){
+         
+          /*for (let i = 0; i < this.nums.length; i++) {
+            if (this.nums[i] == key) {
+              this.nums[i]=0;
+              nums.splice(i);
+              break;
+            }*/
+           let i=0;
+            while(i<this.nums.length){
+              if (this.nums[i] == key)
+               {
+                console.log("inside delete");
+                      this.nums.splice(i, 1);
+                      break;
+                } 
+               i++;  
+
+            }
+            return true;
+          }
+      
+           
+        // this.nums.pop(key);
+
+        
+        /*editNumber(key){
+         
+         for (let i = 0; i < this.nums.length; i++) {
+           if (this.nums[i] == key) {
+             
+             console.log(" inside Edit ");
+             this.nums[i]=0;
+             break;
+           }
+
+         }*/
+         
+       // this.nums.pop(key);
+
+       editNumber(newnum){
+                let oldnum = document.querySelector('#TEXT').value;
+                let allow = true;
+                for(let i=0; i<this.nums.length; i++){
+                    if(this.nums[i] == newnum){
+                        allow = false;
+                        console.log("Number already exist");
+                        break;
+                    }
+                }
+                if(allow){
+                    for(let i=0; i<this.nums.length; i++){
+                        if(this.nums[i] == oldnum){
+                            this.nums[i] = newnum;
+                        }
+                    }
+                }
+                return allow;
+            }
+
+        
+      
+      
+
+  }
+       
+      window.addEventListener("DOMContentLoaded", () => {
+           let logic =new Logic();
+
+        function viewall() {
+
+          console.log("view all Numbers");
+          document.querySelector("#MSG").innerHTML = "VIEW ALL BUTTON CLICKED ";
+          let output = logic.getAllnums();
+          
+          
+          let msg = "";
+          for (let i = 0; i< output.length ; i++ ){
+              msg += output[i]+" ";
+              
+            } 
+
+          document.querySelector("#CONTENT").innerHTML = "ALL NUMBERS "+msg;
+          
+        }
+
+        function viewodd(){
+
+          console.log("view all Numbers");
+          document.querySelector("#MSG").innerHTML = "VIEW ODD BUTTON CLICKED ";
+          let output = logic.getAllnums();
+          
+          
+          let msg = "";
+          for (let i = 0; i< output.length ; i++ ){
+              if(i%2!==0)
+              msg += output[i]+" ";
+              
+            } 
+          
+          document.querySelector("#CONTENT").innerHTML = "ALL NUMBERS "+msg;
+
+
+        }
+
+
+//text ..............................................................................
+        const textbox = document.querySelector("#TEXT");
+        textbox.addEventListener("blur", () => {
+          console.log("blur event");
+          document.querySelector("#MSG").innerHTML = "NUMBER TYPED IN TEXT BOX ";
+
+         let input=document.querySelector("#TEXT").value;
+         console.log("input is " + input);
+         let output=logic.getNumber(input);
+
+          if(output){
+            document.querySelector("#MSG").innerHTML = "NUMBER already exist ";
+            document.querySelector("#EDIT").disabled = false;
+            document.querySelector("#DELETE").disabled = false;
+            document.querySelector("#ADD").disabled = true;
+            document.querySelector("#VIEWALL").disabled = true;
+            document.querySelector("#SHOWODD").disabled = true;
+          }
+           else
+           {
+            document.querySelector("#MSG").innerHTML = "NUMBER not exist ";
+            document.querySelector("#ADD").disabled = false;
+            document.querySelector("#EDIT").disabled = true;
+            document.querySelector("#DELETE").disabled = true;
+            document.querySelector("#VIEWALL").disabled = true;
+            document.querySelector("#SHOWODD").disabled = true;
+           } 
+
+
+
+          
+        
+
+        });
+//add event...........................................................................
+        const addnum = document.querySelector("#ADD");
+        addnum.addEventListener("click", () => {
+          console.log("ADD event");
+
+          //document.querySelector("#MSG").innerText = "Numbers Added to Array";
+          let input=document.querySelector("#TEXT").value;
+          console.log("input is " + input);
+          let output=logic.getNumber(input);
+
+          if(output){
+           console.log("number checked in array");
+           document.querySelector("#MSG").innerHTML = "NUMBER not added ";
+           document.querySelector("#EDIT").disabled = false;
+            document.querySelector("#DELETE").disabled = false;
+
+          }
+          else{
+               
+            logic.addNumber(input);
+            document.querySelector("#MSG").innerHTML = "NUMBER added ";
+            
+            document.querySelector("#ADD").disabled = true;
+            document.querySelector("#EDIT").disabled = true;
+            document.querySelector("#DELETE").disabled = true;
+            document.querySelector("#VIEWALL").disabled = false;
+            document.querySelector("#SHOWODD").disabled = false;
+          }
+
+
+        });
+//edit event........................................
+        const editnum = document.querySelector("#EDIT");
+        editnum.addEventListener("click", () => {
+          console.log("edit event");
+
+          let input=document.querySelector("#TEXT").value;
+         console.log("input is " + input);
+         
+          let newnum =+window.prompt();
+          let output=logic.editNumber(newnum);
+
+
+          if(output){
+          console.log(" " + input);
+          console.log("edited  " + input);
+          document.querySelector("#CONTENT").innerHTML = "";
+          document.querySelector("#MSG").innerHTML = "NUMBER edited ";
+            document.querySelector("#EDIT").disabled = true;
+            document.querySelector("#DELETE").disabled = true;
+            document.querySelector("#ADD").disabled = true;
+            document.querySelector("#VIEWALL").disabled = false;
+            document.querySelector("#SHOWODD").disabled = false;
+    
+         }
+         else
+           {
+            document.querySelector("#MSG").innerHTML = "NUMBER not edited as it is already in array ";
+            document.querySelector("#ADD").disabled = true;
+            document.querySelector("#EDIT").disabled = true;
+            document.querySelector("#DELETE").disabled = true;
+            document.querySelector("#VIEWALL").disabled = false;
+            document.querySelector("#SHOWODD").disabled = false;
+           } 
+
+          
+
+          
+        });
+//delet event........................................................
+        const deletenum = document.querySelector("#DELETE");
+        deletenum.addEventListener("click", () => {
+          console.log("delete event");
+
+          let input=document.querySelector("#TEXT").value;
+         console.log("input is " + input);
+         let output=logic.deleteNumber(input);
+         if(output){
+          console.log(" " + input);
+          console.log("deleted  " + input);
+          document.querySelector("#CONTENT").innerHTML = "";
+          document.querySelector("#MSG").innerHTML = "NUMBER deleted ";
+            document.querySelector("#EDIT").disabled = true;
+            document.querySelector("#DELETE").disabled = true;
+            document.querySelector("#ADD").disabled = true;
+            document.querySelector("#VIEWALL").disabled = false;
+            document.querySelector("#SHOWODD").disabled = false;
+    
+         }
+         else
+           {
+            document.querySelector("#MSG").innerHTML = "NUMBER not deleted ";
+            document.querySelector("#ADD").disabled = true;
+            document.querySelector("#EDIT").disabled = true;
+            document.querySelector("#DELETE").disabled = true;
+            document.querySelector("#VIEWALL").disabled = false;
+            document.querySelector("#SHOWODD").disabled = false;
+           } 
+         
+
+
+          
+        });
+// view all event.....................................................................
+        const viewallnum = document.querySelector("#VIEWALL");
+        viewallnum.addEventListener("click", () => {
+          console.log("viewall event");
+          viewall();
+
+          
+        });
+//showodd event.........................................................................
+        const oddposnum = document.querySelector("#SHOWODD");
+        oddposnum.addEventListener("click", () => {
+          console.log("oddpos event");
+           viewodd();
+
+          
+        });
+
+
+
+        /*
+        Now logic part begions
+        
+        */
+        
+
+
+      });
+    </script>
+    <style></style>
+  </head>
+  <body>
+    <h1>Array of Numbers</h1>
+    <hr />
+    <input type="text" id="TEXT" placeholder="Enter Number"/>
+    <span id="MSG"> X REGION</span> <br /><br /><br />
+
+    <button id="ADD"disabled >ADD</button>
+    <button id="EDIT"disabled >EDIT</button>
+    <button id="DELETE"disabled >DELETE</button>
+    <button id="VIEWALL" disabled>VIEW ALL</button>
+    <button id="SHOWODD" disabled>SHOW ODD POSITION</button>
+    <hr />
+    <p id="CONTENT">Y REGION</p>
+  </body>
+</html>
